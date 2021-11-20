@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  * @author os_cntt_gpdn25
  */
 public class QLSV extends javax.swing.JFrame {
-    
+
     private ArrayList<Student> studentLst;
     private int row = -1;
 
@@ -28,7 +28,7 @@ public class QLSV extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.studentLst = new ArrayList<>();
     }
-    
+
     private void fillToTable() {
         DefaultTableModel dtm = (DefaultTableModel) this.tblStudent.getModel();
         dtm.setRowCount(0);
@@ -43,7 +43,7 @@ public class QLSV extends javax.swing.JFrame {
             dtm.addRow(rowData);
         }
     }
-    
+
     private void resetForm() {
         this.txtName.setText(null);
         this.txtMarks.setText(null);
@@ -51,7 +51,7 @@ public class QLSV extends javax.swing.JFrame {
         this.txtGrade.setText(null);
         this.chkBonus.setSelected(false);
     }
-    
+
     private void orderByName() {
         Comparator<Student> com = new Comparator<Student>() {
             @Override
@@ -61,7 +61,7 @@ public class QLSV extends javax.swing.JFrame {
         };
         Collections.sort(this.studentLst, com);
     }
-    
+
     private void orderByMarks() {
         Comparator<Student> com = new Comparator<Student>() {
             @Override
@@ -300,32 +300,48 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_chkBonusActionPerformed
 
     private void txtMarksKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMarksKeyPressed
-        
+
     }//GEN-LAST:event_txtMarksKeyPressed
 
     private void txtMarksKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMarksKeyReleased
-        
+
         String marks = this.txtMarks.getText();
-        Student student = new Student();
-        student.setMarks(Double.parseDouble(marks));
-        this.txtGrade.setText(student.getGrade());
-        this.chkBonus.setSelected(student.isBonus());
+        if (!marks.equalsIgnoreCase("")) {
+            Student student = new Student();
+            try {
+                if (Double.parseDouble(marks) <= 10) {
+                    student.setMarks(Double.parseDouble(marks));
+                    this.txtGrade.setText(student.getGrade());
+                    this.chkBonus.setSelected(student.isBonus());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Điểm phải nhỏ hơn 10");
+                    this.txtMarks.setText(null);
+                    this.txtGrade.setText(null);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Điểm chỉ được nhập số");
+                this.txtMarks.setText(null);
+                this.txtGrade.setText(null);
+            }
+        }
+
+
     }//GEN-LAST:event_txtMarksKeyReleased
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        
+
         this.resetForm();
-        
+
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        
+
         Student student = new Student();
-        
+
         student.setName(this.txtName.getText());
         student.setMarks(Double.parseDouble(this.txtMarks.getText()));
         student.setMajors(this.cbbMajors.getSelectedItem().toString());
-        
+
         this.studentLst.add(student);
         this.fillToTable();
         this.resetForm();
@@ -334,13 +350,13 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void tblStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStudentMouseClicked
-        
+
         this.row = this.tblStudent.getSelectedRow();
-        
+
         if (row == -1) {
             return;
         }
-        
+
         this.txtName.setText(this.tblStudent.getValueAt(row, 0).toString());
         this.txtMarks.setText(this.tblStudent.getValueAt(row, 1).toString());
         this.cbbMajors.setSelectedItem(this.tblStudent.getValueAt(row, 2));
@@ -349,17 +365,17 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_tblStudentMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-       
+
         if (this.row == -1) {
             JOptionPane.showMessageDialog(this, "Bạn phải chọn 1 dòng");
             return;
         }
-        
+
         Student student = new Student();
         student.setName(this.txtName.getText());
         student.setMarks(Double.parseDouble(this.txtMarks.getText()));
         student.setMajors(this.cbbMajors.getSelectedItem().toString());
-        
+
         this.studentLst.set(this.row, student);
         this.fillToTable();
         this.resetForm();
@@ -368,12 +384,12 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        
+
         if (this.row == -1) {
             JOptionPane.showMessageDialog(this, "Bạn phải chọn 1 dòng");
             return;
         }
-        
+
         this.studentLst.remove(this.row);
         this.fillToTable();
         this.resetForm();
@@ -382,17 +398,17 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnOrderByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderByNameActionPerformed
-        
+
         this.orderByName();
         this.fillToTable();
-        
+
     }//GEN-LAST:event_btnOrderByNameActionPerformed
 
     private void btnOrderByMarksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderByMarksActionPerformed
-        
+
         this.orderByMarks();
         this.fillToTable();
-        
+
     }//GEN-LAST:event_btnOrderByMarksActionPerformed
 
     /**
