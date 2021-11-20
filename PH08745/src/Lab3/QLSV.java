@@ -131,6 +131,7 @@ public class QLSV extends javax.swing.JFrame {
         txtGrade.setEnabled(false);
 
         chkBonus.setText("Có phần thưởng?");
+        chkBonus.setEnabled(false);
         chkBonus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkBonusActionPerformed(evt);

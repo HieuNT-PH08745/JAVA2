@@ -199,6 +199,7 @@
         <Component class="javax.swing.JCheckBox" name="chkBonus">
           <Properties>
             <Property name="text" type="java.lang.String" value="C&#xf3; ph&#x1ea7;n th&#x1b0;&#x1edf;ng?"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkBonusActionPerformed"/>
