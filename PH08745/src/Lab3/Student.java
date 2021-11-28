@@ -1,10 +1,12 @@
 package Lab3;
 
+import java.io.Serializable;
+
 /**
  *
  * @author os_cntt_gpdn25
  */
-public class Student {
+public class Student implements Serializable {
 
     private String name;
 

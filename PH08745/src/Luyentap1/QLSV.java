@@ -4,7 +4,9 @@
  */
 package Luyentap1;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Trung Hieu
  */
-public class QLSV extends javax.swing.JFrame {
-    
+public class QLSV extends javax.swing.JFrame implements Runnable {
+
     private ArrayList<SinhVien> svLst = new ArrayList<>();
     private int row = -1;
     private String FILE_NAME = "list.txt";
@@ -26,8 +28,24 @@ public class QLSV extends javax.swing.JFrame {
         this.buttonGroup1.add(this.rdoNam);
         this.buttonGroup1.add(this.rdoNu);
         this.rdoNam.setSelected(true);
+        
+        Thread t = new Thread(this);
+        t.start();
     }
     
+    @Override
+    public void run() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        while (true) {
+            this.lblClock.setText(sdf.format(new Date()));
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void fillToTable() {
         DefaultTableModel dtm = (DefaultTableModel) this.tblSv.getModel();
         dtm.setRowCount(0);
@@ -42,7 +60,7 @@ public class QLSV extends javax.swing.JFrame {
             dtm.addRow(rowData);
         }
     }
-    
+
     private void clear() {
         this.txtHoTen.setText(null);
         this.txtDiaChi.setText(null);
@@ -82,6 +100,7 @@ public class QLSV extends javax.swing.JFrame {
         btnGhiFile = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSv = new javax.swing.JTable();
+        lblClock = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +189,10 @@ public class QLSV extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblSv);
 
+        lblClock.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblClock.setForeground(new java.awt.Color(255, 51, 51));
+        lblClock.setText("00:00:00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,13 +212,17 @@ public class QLSV extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbbNganh, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDiaChi))))
+                                .addComponent(txtDiaChi))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblClock)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(cbbNganh, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -205,19 +232,19 @@ public class QLSV extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rdoNu))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnTaoSVAo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDocFile)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnGhiFile))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnThem)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnSua)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnXoa)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnClear))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnTaoSVAo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDocFile)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnGhiFile)))
+                                .addComponent(btnClear)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -246,7 +273,8 @@ public class QLSV extends javax.swing.JFrame {
                     .addComponent(btnThem)
                     .addComponent(btnSua)
                     .addComponent(btnXoa)
-                    .addComponent(btnClear))
+                    .addComponent(btnClear)
+                    .addComponent(lblClock))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTaoSVAo)
@@ -265,7 +293,7 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_rdoNamActionPerformed
 
     private void btnTaoSVAoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoSVAoActionPerformed
-        
+
         int i = 1;
         while (i <= 3) {
             SinhVien sv = new SinhVien("hoten" + i, "sv" + i, "diachi" + i, "UDPM", 0);
@@ -273,7 +301,7 @@ public class QLSV extends javax.swing.JFrame {
             this.fillToTable();
             i++;
         }
-        
+
     }//GEN-LAST:event_btnTaoSVAoActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -281,13 +309,13 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void tblSvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSvMouseClicked
-       
+
         this.row = this.tblSv.getSelectedRow();
-        
+
         if (this.row == -1) {
             return;
         }
-        
+
         this.txtHoTen.setText(this.tblSv.getValueAt(row, 0).toString());
         this.txtMaSV.setText(this.tblSv.getValueAt(row, 1).toString());
         this.txtDiaChi.setText(this.tblSv.getValueAt(row, 2).toString());
@@ -297,77 +325,77 @@ public class QLSV extends javax.swing.JFrame {
         } else {
             this.rdoNu.setSelected(true);
         }
-        
+
     }//GEN-LAST:event_tblSvMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-       
+
         if (this.row == -1) {
             JOptionPane.showMessageDialog(this, "Bạn phải chọn 1 dòng");
             return;
         }
-        
+
         this.svLst.remove(this.row);
         this.fillToTable();
         this.clear();
         this.row = -1;
-        
+
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        
+
         SinhVien sv = new SinhVien();
-        
+
         sv.setHoTen(this.txtHoTen.getText());
         sv.setDiaChi(this.txtDiaChi.getText());
         sv.setMaSV(this.txtMaSV.getText());
         sv.setNganh(this.cbbNganh.getSelectedItem().toString());
         sv.setGioiTinh(this.rdoNam.isSelected() ? 1 : 0);
-        
+
         this.svLst.add(sv);
         this.fillToTable();
         this.clear();
         this.row = -1;
-        
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        
+
         if (this.row == -1) {
             JOptionPane.showMessageDialog(this, "Bạn phải chọn 1 dòng");
             return;
         }
-        
+
         SinhVien sv = new SinhVien();
-        
+
         sv.setHoTen(this.txtHoTen.getText());
         sv.setDiaChi(this.txtDiaChi.getText());
         sv.setMaSV(this.txtMaSV.getText());
         sv.setNganh(this.cbbNganh.getSelectedItem().toString());
         sv.setGioiTinh(this.rdoNam.isSelected() ? 1 : 0);
-        
+
         this.svLst.set(this.row, sv);
         this.fillToTable();
         this.clear();
         this.row = -1;
-        
+
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
-       
+
         XFile.writeObject(FILE_NAME, this.svLst);
         JOptionPane.showMessageDialog(this, "Ghi file thành công");
-        
+
     }//GEN-LAST:event_btnGhiFileActionPerformed
 
     private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
-        
+
         ArrayList<SinhVien> lst = (ArrayList<SinhVien>) XFile.readObject(FILE_NAME);
         for (SinhVien sv : lst) {
             this.svLst.add(sv);
         }
         this.fillToTable();
-        
+
     }//GEN-LAST:event_btnDocFileActionPerformed
 
     /**
@@ -421,6 +449,7 @@ public class QLSV extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClock;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
     private javax.swing.JTable tblSv;

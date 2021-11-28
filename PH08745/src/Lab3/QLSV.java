@@ -19,6 +19,7 @@ public class QLSV extends javax.swing.JFrame {
 
     private ArrayList<Student> studentLst;
     private int row = -1;
+    private String FILE_NAME = "sinhvien-lab3.txt";
 
     /**
      * Creates new form QLSV
@@ -102,6 +103,8 @@ public class QLSV extends javax.swing.JFrame {
         tblStudent = new javax.swing.JTable();
         btnOrderByName = new javax.swing.JButton();
         btnOrderByMarks = new javax.swing.JButton();
+        btnGhiFile = new javax.swing.JButton();
+        btnDocFile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -257,6 +260,20 @@ public class QLSV extends javax.swing.JFrame {
             }
         });
 
+        btnGhiFile.setText("Ghi file");
+        btnGhiFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGhiFileActionPerformed(evt);
+            }
+        });
+
+        btnDocFile.setText("Đọc file");
+        btnDocFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDocFileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -274,7 +291,10 @@ public class QLSV extends javax.swing.JFrame {
                         .addComponent(btnOrderByName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOrderByMarks)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGhiFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDocFile)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -289,7 +309,9 @@ public class QLSV extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOrderByName)
-                    .addComponent(btnOrderByMarks))
+                    .addComponent(btnOrderByMarks)
+                    .addComponent(btnGhiFile)
+                    .addComponent(btnDocFile))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -412,6 +434,23 @@ public class QLSV extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnOrderByMarksActionPerformed
 
+    private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
+        
+        XFile.writeObject(FILE_NAME, this.studentLst);
+        JOptionPane.showMessageDialog(this, "Ghi file thành công");
+        
+    }//GEN-LAST:event_btnGhiFileActionPerformed
+
+    private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
+        
+        ArrayList<Student> lst = (ArrayList<Student>) XFile.readObject(FILE_NAME);
+        for (Student student : lst) {
+            this.studentLst.add(student);
+        }
+        this.fillToTable();
+        
+    }//GEN-LAST:event_btnDocFileActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -450,6 +489,8 @@ public class QLSV extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDocFile;
+    private javax.swing.JButton btnGhiFile;
     private javax.swing.JButton btnOrderByMarks;
     private javax.swing.JButton btnOrderByName;
     private javax.swing.JButton btnReset;

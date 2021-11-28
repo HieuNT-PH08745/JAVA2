@@ -4,7 +4,9 @@
  */
 package Lab2;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author os_cntt_gpdn25
  */
-public class StaffEdition extends javax.swing.JFrame {
+public class StaffEdition extends javax.swing.JFrame implements Runnable{
 
     private ArrayList<Staff> staffList;
     private int row;
@@ -24,6 +26,22 @@ public class StaffEdition extends javax.swing.JFrame {
         buttonGroup1.add(rdoFemale);
         rdoMale.setSelected(true);
         chkStatus.setSelected(true);
+        
+        Thread t = new Thread(this);
+        t.start();
+    }
+    
+    @Override
+    public void run() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        while (true) {
+            this.lblClock.setText(sdf.format(new Date()));
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void fillToTable() {
@@ -85,6 +103,7 @@ public class StaffEdition extends javax.swing.JFrame {
         btnReset = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListStaff = new javax.swing.JTable();
+        lblClock = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,6 +191,9 @@ public class StaffEdition extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tblListStaff);
 
+        lblClock.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblClock.setText("00:00:00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -209,7 +231,8 @@ public class StaffEdition extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblClock))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -217,7 +240,9 @@ public class StaffEdition extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lblClock))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -406,6 +431,7 @@ public class StaffEdition extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblClock;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoMale;
     private javax.swing.JTable tblListStaff;
